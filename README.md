@@ -50,7 +50,8 @@ to surface uncertainty instead of hiding it behind a single label.
 ## Project structure
 
 ```
-├── app.py                      # Gradio app: upload an X-ray, get a report
+├── streamlit_app.py            # Streamlit app (this is what is deployed)
+├── app.py                      # Gradio app: same logic, local entry point
 ├── src/
 │   ├── train_clean_model.py    # Training script (MobileNetV2 + class weights)
 │   ├── check_data.py           # Dataset sanity checks
@@ -84,7 +85,9 @@ python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-python app.py
+streamlit run streamlit_app.py     # Streamlit UI (this is what is deployed)
+# or
+python app.py                      # Gradio UI, same model and logic
 ```
 
 Then open the local URL Gradio prints (default `http://127.0.0.1:7860`), upload a
