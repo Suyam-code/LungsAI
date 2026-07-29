@@ -1,0 +1,11 @@
+tensorflow>=2.16
+gradio>=4.0
+numpy>=1.24
+pillow>=10.0
+pandas>=2.0
+matplotlib>=3.7
+
+# Only needed for the optional FastAPI backend (backend/main.py)
+fastapi>=0.110
+uvicorn>=0.29
+python-multipart>=0.0.9

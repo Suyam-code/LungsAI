@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LungsAI – Chest X‑ray Analysis</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏥 LungsAI</h1>
+            <p>Clinical Decision Support for Chest X‑rays</p>
+            <p class="disclaimer">⚠️ For research/demonstration only – not for clinical use.</p>
+        </header>
+
+        <div class="upload-area">
+            <input type="file" id="fileInput" accept="image/jpeg,image/png">
+            <div id="preview">
+                <img id="previewImg" src="#" alt="Preview">
+            </div>
+            <button id="analyzeBtn" disabled>Analyze X‑ray</button>
+        </div>
+
+        <div id="result" style="display: none;">
+            <h2>Diagnosis</h2>
+            <div id="diagnosisText"></div>
+            <div id="confidenceText"></div>
+            <h3>Probability Breakdown</h3>
+            <canvas id="probChart" width="400" height="300"></canvas>
+        </div>
+
+        <footer>
+            <p>UEM Kolkata Final Year Project | Suyam Lodha & Team</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

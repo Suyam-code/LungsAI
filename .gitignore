@@ -1,0 +1,28 @@
+# ---- Datasets (never commit) ----
+# The image data is several GB and comes from public sources; see the README
+# for download links and the folder layout the scripts expect.
+data/
+
+# ---- Models ----
+# The final trained model (~12 MB) IS committed so the app runs after cloning.
+# Older / intermediate checkpoints are not.
+models/*
+!models/final_clean_model.keras
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ---- Editor / OS ----
+.DS_Store
+.idea/
+.vscode/
+*.save
+
+# ---- Outputs ----
+*.log
+outputs/
