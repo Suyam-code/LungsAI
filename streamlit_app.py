@@ -105,6 +105,21 @@ st.error(
     "concern, please speak to a qualified doctor."
 )
 
+# Honesty about the model's actual reliability. The v1 training split leaked
+# patients and each class came from a different source dataset, so the model
+# often fails on X-rays from outside those datasets. Documented rather than
+# hidden - see the README for the full analysis and the rebuild plan.
+st.warning(
+    "**Known issue — v1 does not generalise.** Testing revealed two methodology "
+    "problems: the train/validation split leaked patients (multiple scans of the "
+    "same person on both sides), and each class was drawn from a different source "
+    "dataset, so the model partly learned to recognise the dataset rather than the "
+    "pathology. It frequently misclassifies X-rays from outside its training "
+    "sources. A rebuild on a single dataset with patient-grouped splits is in "
+    "progress — the analysis is written up in the "
+    "[README](https://github.com/Suyam-code/LungsAI#known-limitations-what-i-found-and-why-it-matters)."
+)
+
 uploaded = st.file_uploader(
     "Upload a chest X-ray", type=["png", "jpg", "jpeg"], label_visibility="visible"
 )
@@ -139,7 +154,9 @@ if uploaded is not None:
 
 st.divider()
 st.caption(
-    "Model: MobileNetV2 (transfer learning), 89.5% validation accuracy on a balanced "
-    "20,000-image dataset. "
+    "Model: MobileNetV2 (transfer learning) on a balanced 20,000-image dataset. "
+    "The 89.5% figure reported during training came from a split that leaked "
+    "patients, so it overstates real performance — see the README for the full "
+    "write-up. "
     "[Source code](https://github.com/Suyam-code/LungsAI)"
 )

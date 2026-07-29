@@ -4,15 +4,40 @@ A deep-learning clinical decision-support tool that classifies a chest X-ray int
 one of four classes — **COVID-19, Lung Cancer, Pneumonia, or Normal** — and
 returns the prediction with a full probability breakdown.
 
-Built with transfer learning on MobileNetV2, trained on a balanced 20,000-image
-dataset, and served through a Gradio interface.
+Built with transfer learning on MobileNetV2 and trained on a balanced
+20,000-image dataset.
+
+**Live demo:** https://lungsai-bevbaa85pvrl5v9zf3anuh.streamlit.app
 
 > **Not a medical device.** This is a student project built for learning. It must
 > not be used for real diagnosis or clinical decisions.
 
+*(The demo sleeps after 12 hours of inactivity on the free tier; the first load
+after a nap takes a moment to wake up.)*
+
 ---
 
-## Results
+## ⚠️ Current status: v1 does not generalise, and I know why
+
+I tested the trained model on a chest X-ray from outside my datasets and it
+predicted the wrong class. Investigating it turned up two real methodology
+problems, described in full under [Known
+limitations](#known-limitations-what-i-found-and-why-it-matters). In short:
+
+1. **The validation split leaks patients.** Images were split randomly by file,
+   but the NIH data has multiple X-rays per patient (5,001 images from 2,521
+   patients — one patient contributes 30). The same patient appears in both
+   training and validation, so the reported accuracy is inflated.
+2. **Each class comes from a different source dataset,** so the model can
+   score well by recognising *which dataset* an image came from rather than the
+   pathology in it.
+
+**The 89.5% below is therefore not a trustworthy estimate of real performance.**
+I am rebuilding this properly — see [Rebuild in progress](#rebuild-in-progress).
+
+---
+
+## Results (v1 — not trustworthy, see above)
 
 | Metric | Score |
 | --- | --- |
@@ -21,7 +46,10 @@ dataset, and served through a Gradio interface.
 | Recall | 0.904 |
 | F1-score | 0.904 |
 
-Trained on 20,001 images balanced across the four classes (~5,000 each).
+Measured on a random 20% validation split of 20,001 images balanced across four
+classes. Because that split leaks patients between train and validation, these
+numbers overstate real-world performance and should be read as a baseline to
+beat, not a result.
 
 ---
 
@@ -128,20 +156,55 @@ The best checkpoint by validation accuracy is written to
 
 ---
 
-## What I'd improve next
+## Known limitations: what I found and why it matters
 
-- **Fine-tune the base model.** MobileNetV2 is frozen; unfreezing the top layers
-  at a low learning rate would likely add a few points of accuracy.
-- **Report per-class metrics.** The headline numbers are aggregate — a confusion
-  matrix and per-class recall would show exactly where the model confuses
-  Pneumonia with COVID.
-- **Validate the thresholds.** The 0.15 and 0.20 cancer-probability cut-offs were
-  chosen by inspection, not tuned. They should be set from a
-  precision-recall curve on a held-out set.
-- **Add a proper test set.** Currently there is a train/validation split only; a
-  third untouched split would give a more honest performance estimate.
-- **Grad-CAM overlays** to show which region of the X-ray drove the prediction —
-  important for any tool meant to support a clinician rather than replace one.
+I tested v1 on a chest X-ray from outside my training data and it returned the
+wrong class. Rather than tune around it, I traced the cause. Three findings:
+
+**1. Patient leakage between train and validation.**
+`ImageDataGenerator(validation_split=0.2)` splits randomly *by file*. The NIH
+images are named `patientID_scanNumber.png`, and my Lung_Cancer class holds 5,001
+images from just 2,521 patients — one patient contributes 30 scans. So the same
+patient's X-rays land in both training and validation, and the model can score
+well by recognising anatomy it has already memorised. Any split for medical
+imaging has to be grouped **by patient**, not by image.
+
+**2. Each class comes from a different source dataset.**
+COVID, Normal and Pneumonia come from the COVID-19 Radiography Database
+(`COVID-1.png`, `Normal-1.png`, `Viral Pneumonia-1.png`); Lung_Cancer comes from
+NIH ChestX-ray14 (`00000004_000.png`). Those datasets differ in scanner,
+resolution, contrast normalisation and preprocessing — so a model can reach high
+accuracy by learning *which dataset an image came from* rather than what is wrong
+with the patient. This is shortcut learning, and it explains precisely why the
+model works on held-out images from these datasets and fails on a real external
+X-ray.
+
+**3. The "Lung_Cancer" label is not a cancer diagnosis.**
+NIH ChestX-ray14 has no lung-cancer label. It has **Mass** and **Nodule**, which
+are radiological findings — many are benign. Labelling that class "Lung_Cancer"
+overstates what the data supports.
+
+Smaller issues: the base model is frozen (no fine-tuning), the 0.15 / 0.20
+cancer-probability thresholds were chosen by inspection rather than from a
+precision-recall curve, and there is no untouched test set — only train/val.
+
+---
+
+## Rebuild in progress
+
+Fixing this properly means changing the problem, not just the hyperparameters:
+
+- **Single source, three classes.** Rebuild using NIH ChestX-ray14 only —
+  *No Finding / Pneumonia / Mass-Nodule* — so every class is drawn from the same
+  distribution and the dataset shortcut disappears. This drops COVID, which only
+  exists in a different dataset.
+- **Patient-grouped splits** into train / validation / **test**, so no patient
+  appears in more than one split.
+- **Honest evaluation:** confusion matrix and per-class precision/recall, not a
+  single aggregate number. I expect accuracy to fall — that drop is the point.
+- **Grad-CAM** to confirm the model attends to lung fields rather than image
+  borders or text markers. If the heatmaps sit on the edges, it is still cheating.
+- **Threshold tuning** from a precision-recall curve on the held-out test set.
 
 ---
 
