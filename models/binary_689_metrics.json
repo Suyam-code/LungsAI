@@ -1,0 +1,50 @@
+{
+  "train_images_per_class": 689,
+  "test_accuracy": 0.5725,
+  "standard_error": 0.011062182198824967,
+  "roc_auc": 0.5963635,
+  "chance_baseline": 0.5,
+  "class_names": [
+    "Mass_Nodule",
+    "No_Finding"
+  ],
+  "classification_report": {
+    "Mass_Nodule": {
+      "precision": 0.5653742110009017,
+      "recall": 0.627,
+      "f1-score": 0.5945945945945946,
+      "support": 1000.0
+    },
+    "No_Finding": {
+      "precision": 0.5813692480359147,
+      "recall": 0.518,
+      "f1-score": 0.5478582760444209,
+      "support": 1000.0
+    },
+    "accuracy": 0.5725,
+    "macro avg": {
+      "precision": 0.5733717295184082,
+      "recall": 0.5725,
+      "f1-score": 0.5712264353195078,
+      "support": 2000.0
+    },
+    "weighted avg": {
+      "precision": 0.5733717295184082,
+      "recall": 0.5725,
+      "f1-score": 0.5712264353195078,
+      "support": 2000.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      627,
+      373
+    ],
+    [
+      482,
+      518
+    ]
+  ],
+  "n_test_images": 2000,
+  "notes": "Binary No_Finding vs Mass_Nodule, NIH only, patient-disjoint splits. Validation and test sets identical across training sizes, so only training volume varies."
+}

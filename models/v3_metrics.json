@@ -1,0 +1,62 @@
+{
+  "test_accuracy": 0.4096109839816934,
+  "chance_baseline": 0.3333333333333333,
+  "v2_frozen_baseline": 0.4241,
+  "class_names": [
+    "Mass_Nodule",
+    "No_Finding",
+    "Pneumonia"
+  ],
+  "classification_report": {
+    "Mass_Nodule": {
+      "precision": 0.36416184971098264,
+      "recall": 0.43249427917620137,
+      "f1-score": 0.39539748953974896,
+      "support": 437.0
+    },
+    "No_Finding": {
+      "precision": 0.4720496894409938,
+      "recall": 0.34782608695652173,
+      "f1-score": 0.4005270092226614,
+      "support": 437.0
+    },
+    "Pneumonia": {
+      "precision": 0.41702127659574467,
+      "recall": 0.448512585812357,
+      "f1-score": 0.432194046306505,
+      "support": 437.0
+    },
+    "accuracy": 0.4096109839816934,
+    "macro avg": {
+      "precision": 0.417744271915907,
+      "recall": 0.40961098398169343,
+      "f1-score": 0.4093728483563051,
+      "support": 1311.0
+    },
+    "weighted avg": {
+      "precision": 0.417744271915907,
+      "recall": 0.4096109839816934,
+      "f1-score": 0.4093728483563051,
+      "support": 1311.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      189,
+      102,
+      146
+    ],
+    [
+      157,
+      152,
+      128
+    ],
+    [
+      173,
+      68,
+      196
+    ]
+  ],
+  "n_test_images": 1311,
+  "notes": "Two-stage: head warm-up then fine-tuning of the top 54 MobileNetV2 layers at lr=1e-5, BatchNorm layers kept frozen. Splits patient-disjoint, all data from NIH ChestX-ray14."
+}

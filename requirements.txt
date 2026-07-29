@@ -9,6 +9,7 @@ tensorflow>=2.16; sys_platform == 'darwin'
 streamlit>=1.38
 numpy>=1.24
 pillow>=10.0
+scikit-learn>=1.3
 
 # Local Gradio entry point (app.py). Not needed by the Streamlit deployment.
 gradio>=4.44

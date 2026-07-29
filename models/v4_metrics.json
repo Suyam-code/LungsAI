@@ -1,0 +1,66 @@
+{
+  "test_accuracy": 0.4431731502669718,
+  "standard_error": 0.013719726652797245,
+  "chance_baseline": 0.3333333333333333,
+  "prior_runs": {
+    "v2_mobilenet_frozen": 0.4241,
+    "v3_mobilenet_finetuned": 0.4096
+  },
+  "class_names": [
+    "Mass_Nodule",
+    "No_Finding",
+    "Pneumonia"
+  ],
+  "classification_report": {
+    "Mass_Nodule": {
+      "precision": 0.4727272727272727,
+      "recall": 0.2974828375286041,
+      "f1-score": 0.3651685393258427,
+      "support": 437.0
+    },
+    "No_Finding": {
+      "precision": 0.49158249158249157,
+      "recall": 0.3340961098398169,
+      "f1-score": 0.3978201634877384,
+      "support": 437.0
+    },
+    "Pneumonia": {
+      "precision": 0.41271989174560214,
+      "recall": 0.6979405034324943,
+      "f1-score": 0.5187074829931972,
+      "support": 437.0
+    },
+    "accuracy": 0.4431731502669718,
+    "macro avg": {
+      "precision": 0.45900988535178877,
+      "recall": 0.44317315026697174,
+      "f1-score": 0.42723206193559277,
+      "support": 1311.0
+    },
+    "weighted avg": {
+      "precision": 0.45900988535178877,
+      "recall": 0.4431731502669718,
+      "f1-score": 0.42723206193559277,
+      "support": 1311.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      130,
+      92,
+      215
+    ],
+    [
+      72,
+      146,
+      219
+    ],
+    [
+      73,
+      59,
+      305
+    ]
+  ],
+  "n_test_images": 1311,
+  "notes": "DenseNet121 (CheXNet architecture) control experiment. Same patient-disjoint NIH 3-class splits, same augmentation and evaluation as v2/v3 - architecture is the only variable."
+}
