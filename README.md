@@ -38,7 +38,7 @@ Lung_Cancer** while the other three classes stay at 1.0. This deliberately
 biases the model toward catching cancer at the cost of some false positives.
 
 **Safety logic on top of the model.** Raw argmax alone is not safe enough for
-this problem, so `src/app.py` adds a decision layer: if the top prediction is
+this problem, so `app.py` adds a decision layer: if the top prediction is
 *Normal* but the Lung_Cancer probability is at or above 0.15, the result is
 escalated to **"Suspicious Normal / Possible Lung_Cancer"** rather than being
 reported as clear. The same idea applies when COVID or Pneumonia is the top class
@@ -50,8 +50,8 @@ to surface uncertainty instead of hiding it behind a single label.
 ## Project structure
 
 ```
+├── app.py                      # Gradio app: upload an X-ray, get a report
 ├── src/
-│   ├── app.py                  # Gradio app: upload an X-ray, get a report
 │   ├── train_clean_model.py    # Training script (MobileNetV2 + class weights)
 │   ├── check_data.py           # Dataset sanity checks
 │   └── check_data_vis.py       # Visual inspection of samples
@@ -84,7 +84,7 @@ python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-python src/app.py
+python app.py
 ```
 
 Then open the local URL Gradio prints (default `http://127.0.0.1:7860`), upload a

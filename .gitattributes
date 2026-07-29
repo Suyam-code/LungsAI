@@ -1,0 +1,4 @@
+# Hugging Face blocks plain-git files over 10 MB, so the trained model is
+# tracked with Git LFS. GitHub handles it fine either way.
+*.keras filter=lfs diff=lfs merge=lfs -text
+*.h5 filter=lfs diff=lfs merge=lfs -text

@@ -1,11 +1,13 @@
-tensorflow>=2.16
-gradio>=4.0
+# tensorflow-cpu (not full tensorflow): the GPU packages are ~2 GB of CUDA
+# libraries that are unused on a CPU host, and they slow the build down badly.
+tensorflow-cpu>=2.16
+gradio>=4.44
 numpy>=1.24
 pillow>=10.0
+
+# Only needed for the data-prep scripts and the optional FastAPI backend.
 pandas>=2.0
 matplotlib>=3.7
-
-# Only needed for the optional FastAPI backend (backend/main.py)
 fastapi>=0.110
 uvicorn>=0.29
 python-multipart>=0.0.9
